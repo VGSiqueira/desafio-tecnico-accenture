@@ -1,5 +1,7 @@
 package pages;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,11 +23,11 @@ public class InsurantDataPO {
 	public WebElement txtbx_DateBirth;
 	
 	/**Elemento de opção de gênero masculino do assegurado. */
-	@FindBy(id = "gendermale")
+	@FindBy(css = "#insurance-form > div > section:nth-child(2) > div:nth-child(4) > p > label:nth-child(1)")
 	public WebElement rdbtn_Male;
 	
 	/**Elemento de opção de gênero feminino do assegurado. */
-	@FindBy(id = "genderfemale")
+	@FindBy(css = "#insurance-form > div > section:nth-child(2) > div:nth-child(4) > p > label:nth-child(2)")
 	public WebElement rdbtn_Female;
 	
 	/**Elemento de campo de texto de endereço do assegurado. */
@@ -87,6 +89,12 @@ public class InsurantDataPO {
 	/**Elemento de botão avançar para a aba 'Enter Product Data'. */
 	@FindBy(id = "nextenterproductdata")
 	public WebElement btn_Next;
+	
+	@FindBy(css = "#insurance-form > div > section:nth-child(2) > div.field.idealforms-field.idealforms-field-checkbox > p")
+	public WebElement box_hobbies;
+	
+	@FindBy(css = "#insurance-form > div > section:nth-child(2) > div.field.idealforms-field.idealforms-field-checkbox > p > label")
+	public List<WebElement> chkbox_hobbies;
 	
 	/**Construtor da classe. 
 	 * @param driver Driver do navegador.

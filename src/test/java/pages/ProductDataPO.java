@@ -1,12 +1,13 @@
 package pages;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 /**Page object de dados do produto. */
-public class ProductDataPO {
+public class ProductDataPO extends BasePO {
 
 	/**Elemento de campo de texto da data inicial do produto. */
 	@FindBy(id = "startdate")
@@ -44,10 +45,18 @@ public class ProductDataPO {
 	@FindBy(id = "nextselectpriceoption")
 	public WebElement btn_Next;
 	
+	/**Elemento que contém as opções de produtos opcionais. */
+	@FindBy(css = "#insurance-form > div > section:nth-child(3) > div.field.idealforms-field.idealforms-field-checkbox > p")
+	public WebElement box_OptionalProducts;
+	
+	/**Lista de elementos de opções de produtos opcionais. */
+	@FindBy(css = "#insurance-form > div > section:nth-child(3) > div.field.idealforms-field.idealforms-field-checkbox > p > label")
+	public List<WebElement> chkbox_OptionalProducts;
+	
 	/**Construtor da classe. 
 	 * @param driver Driver do navegador.
 	 */
 	public ProductDataPO(WebDriver driver) {
-		PageFactory.initElements(driver, this);
+		super(driver);
 	}
 }

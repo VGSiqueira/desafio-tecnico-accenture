@@ -127,16 +127,13 @@ public class InsurantDataBuilder {
 		utils.escreverCampoTexto(insurantDataPO.txtbx_FirstName, driver, firstName, tempoMaximoEspera);
 		utils.escreverCampoTexto(insurantDataPO.txtbx_LastName, driver, lastName, tempoMaximoEspera);
 		utils.escreverCampoTexto(insurantDataPO.txtbx_DateBirth, driver, dateOfBirth, tempoMaximoEspera);
-		//gender
 		utils.clicar(gender, driver, tempoMaximoEspera);
 		utils.escreverCampoTexto(insurantDataPO.txtbx_StreetAdress, driver, streetAdress, tempoMaximoEspera);
 		utils.selecionarOpcaoDropDown(insurantDataPO.drpdwn_Country, country);
 		utils.escreverCampoTexto(insurantDataPO.txtbx_ZipCode, driver, zipCode, tempoMaximoEspera);
 		utils.escreverCampoTexto(insurantDataPO.txtbx_City, driver, city, tempoMaximoEspera);
 		utils.selecionarOpcaoDropDown(insurantDataPO.drpdwn_Occupation, occupation);
-		//hobbies
-		utils.selecionarOpcoes(listaHobbies, driver, hobbies);
-		
+		utils.selecionarOpcoes(listaHobbies, driver, hobbies, tempoMaximoEspera);
 		utils.escreverCampoTexto(insurantDataPO.txtbx_Website, driver, website, tempoMaximoEspera);
 		utils.escreverCampoTexto(insurantDataPO.txtbx_Picture, driver, picture, tempoMaximoEspera);
 	}

@@ -3,14 +3,21 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 /**Page object da aba 'Vehicle Data'. */
-public class VehicleDataPO {
+public class VehicleDataPO extends BasePO {
 
 	/**Elemento de seletor da marca do veículo. */
 	@FindBy(id = "make")
 	public WebElement drpdwn_Make;
+	
+	/**Elemento de seletor de modelo do veículo. */
+	@FindBy(id = "model")
+	public WebElement drpdwn_Model;
+	
+	/**Elemento de campo de texto de capacidade de cilindrada do veículo. */
+	@FindBy(id = "cylindercapacity")
+	public WebElement txtbx_CylinderCapacity;
 	
 	/**Elemento de campo de texto de potência do veículo. */
 	@FindBy(id = "engineperformance")
@@ -48,6 +55,6 @@ public class VehicleDataPO {
 	 * @param driver Driver do navegador.
 	 */
 	public VehicleDataPO(WebDriver driver) {
-		PageFactory.initElements(driver, this);
+		super(driver);
 	}
 }

@@ -45,6 +45,16 @@ public class MethodUtils {
 		esperar.until(ExpectedConditions.elementToBeClickable(elemento));
 	}
 	
+	public void aguardarElementoPorTexto(WebElement elemento, WebDriver driver, String texto, int tempoMaximoEspera) {
+		
+		tempoSegundos = Duration.ofSeconds(tempoMaximoEspera);
+		
+		driver.manage().timeouts().implicitlyWait(tempoSegundos);
+		
+		esperar = new WebDriverWait(driver, tempoSegundos);
+		esperar.until(ExpectedConditions.textToBePresentInElement(elemento, texto));
+	}
+	
 	public void clicar(WebElement elemento, WebDriver driver, int tempoMaximoExpera) {
 		
 		aguardarElementoSerClicavel(elemento, driver, tempoMaximoExpera);
@@ -76,14 +86,14 @@ public class MethodUtils {
 		return texto;
 	}
 	
-	public void selecionarOpcoes(List<WebElement> listaOpcoes, WebDriver driver, String[] opcoes) {
+	public void selecionarOpcoes(List<WebElement> listaOpcoes, WebDriver driver, String[] opcoes, int tempoMaximoExpera) {
 		
 		for (String opcao : opcoes) {
 			WebElement elementoOpcao = listaOpcoes.stream()
 					.filter(op -> obterTexto(op).contains(opcao))
 					.findFirst().orElse(null);
-			clicar(elementoOpcao, driver, 10);
-		}		
+			clicar(elementoOpcao, driver, tempoMaximoExpera);
+		}
 	}
 	
 }

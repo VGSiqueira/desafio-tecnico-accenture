@@ -5,10 +5,9 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 /**Page object de dados do assegurado. */
-public class InsurantDataPO {
+public class InsurantDataPO extends BasePO {
 
 	/**Elemento de campo de texto do primeiro nome do assegurado. */
 	@FindBy(id = "firstname")
@@ -90,9 +89,11 @@ public class InsurantDataPO {
 	@FindBy(id = "nextenterproductdata")
 	public WebElement btn_Next;
 	
+	/**Elemento que contém as opções de hobbies. */
 	@FindBy(css = "#insurance-form > div > section:nth-child(2) > div.field.idealforms-field.idealforms-field-checkbox > p")
 	public WebElement box_hobbies;
 	
+	/**Lista de elementos de opções de hobbies. */
 	@FindBy(css = "#insurance-form > div > section:nth-child(2) > div.field.idealforms-field.idealforms-field-checkbox > p > label")
 	public List<WebElement> chkbox_hobbies;
 	
@@ -100,6 +101,6 @@ public class InsurantDataPO {
 	 * @param driver Driver do navegador.
 	 */
 	public InsurantDataPO(WebDriver driver) {
-		PageFactory.initElements(driver, this);
+		super(driver);
 	}
 }

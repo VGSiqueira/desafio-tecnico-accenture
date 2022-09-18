@@ -3,25 +3,24 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 /**Page object de opções de preços. */
-public class PriceOptionPO {
+public class PriceOptionPO extends BasePO {
 
 	/**Elemento de opção de plano silver. */
-	@FindBy(id = "selectsilver")
+	@FindBy(css = "#priceTable > tfoot > tr > th.group > label:nth-child(1)")
 	public WebElement rdbtn_Silver;
 	
 	/**Elemento de opção de plano gold. */
-	@FindBy(id = "selectgold")
+	@FindBy(css = "#priceTable > tfoot > tr > th.group > label:nth-child(2)")
 	public WebElement rdbtn_Gold;
 	
 	/**Elemento de opção de plano platinum. */
-	@FindBy(id = "selectplatinum")
+	@FindBy(css = "#priceTable > tfoot > tr > th.group > label:nth-child(3)")
 	public WebElement rdbtn_Platinum;
 	
 	/**Elemento de opção de plano ultimate. */
-	@FindBy(id = "selectultimate")
+	@FindBy(css = "#priceTable > tfoot > tr > th.group > label:nth-child(4)")
 	public WebElement rdbtn_Ultimate;
 	
 	/**Elemento de botão para voltar para aba 'Enter Insurant Data'. */
@@ -36,6 +35,6 @@ public class PriceOptionPO {
 	 * @param driver Driver do navegador.
 	 */
 	public PriceOptionPO(WebDriver driver) {
-		PageFactory.initElements(driver, this);
+		super(driver);
 	}
 }

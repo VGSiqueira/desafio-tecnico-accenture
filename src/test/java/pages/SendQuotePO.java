@@ -3,10 +3,9 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 /**Page object de enviar cotação. */
-public class SendQuotePO {
+public class SendQuotePO extends BasePO {
 
 	/**Elemento de campo de texto e-mail para envio da cotação. */
 	@FindBy(id = "email")
@@ -44,6 +43,6 @@ public class SendQuotePO {
 	 * @param driver Driver do navegador.
 	 */
 	public SendQuotePO(WebDriver driver) {
-		PageFactory.initElements(driver, this);
+		super(driver);
 	}
 }

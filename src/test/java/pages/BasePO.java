@@ -42,6 +42,26 @@ public abstract class BasePO {
 	@FindBy(css = "body > div.sweet-alert.showSweetAlert.visible > h2")
 	public WebElement txt_AlertTitle;
 	
+	/**Elemento de texto da quantidade de campos não preenchidos na aba Vehicle Data. */
+	@FindBy(css = "#entervehicledata > span")
+	public WebElement span_VehicleDataCounter;
+	
+	/**Elemento de texto da quantidade de campos não preenchidos na aba Insurant Data. */
+	@FindBy(css = "#enterinsurantdata > span")
+	public WebElement span_InsurantDataCounter;
+	
+	/**Elemento de texto da quantidade de campos não preenchidos na aba Product Data. */
+	@FindBy(css = "#enterproductdata > span")
+	public WebElement span_ProductDataCounter;
+	
+	/**Elemento de texto da quantidade de campos não preenchidos na aba Select Price Option. */
+	@FindBy(css = "#selectpriceoption > span")
+	public WebElement span_PriceOptionCounter;
+	
+	/**Elemento de texto da quantidade de campos não preenchidos na aba Send Quote. */
+	@FindBy(css = "#sendquote > span")
+	public WebElement span_SendQuoteCounter;
+	
     /**
      * Construtor da classe.
      * @param driver Driver utilizado pelo sistema.

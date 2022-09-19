@@ -51,7 +51,24 @@ public class VehicleDataPO extends BasePO {
 	@FindBy(id = "nextenterinsurantdata")
 	public WebElement btn_Next;
 	
-	/**Construtor da classe. 
+	/**Elemento de campo de texto de carga útil do veículo. */
+	@FindBy(id = "payload")
+	public WebElement txtbx_Payload;
+	
+	/**Elemento de campo de texto de carga total do veículo. */
+	@FindBy(id = "totalweight")
+	public WebElement txtbx_TotalWeight;
+	
+	/**Elemento de opção 'Sim' para mão direita. */
+	@FindBy(id = "righthanddriveyes")
+	public WebElement rdbtn_RightHandYes;
+	
+	/**Elemento de opção 'Não' para mão direita. */
+	@FindBy(id = "righthanddriveno")
+	public WebElement rdbtn_RightHandNo;
+	
+	/**
+	 * Construtor da classe. 
 	 * @param driver Driver do navegador.
 	 */
 	public VehicleDataPO(WebDriver driver) {

@@ -6,12 +6,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+/**Clase de configuração de leitura de arquivos. */
 public class ConfigFileReader {
 	
+	/**Instância de Properties. */
 	private Properties properties;
 	
-	private final String propertyFilePath= "configs//Configuration.properties";
+	/**Caminho de acesso ao arquivo de configuração de propriedades. */
+	private final String propertyFilePath = "configs//Configuration.properties";
 
+	/**Construtor da classe. */
 	public ConfigFileReader(){
 		
 		BufferedReader reader;
@@ -31,6 +35,7 @@ public class ConfigFileReader {
 		}		
 	}
 	
+	/**Método responsável por obter o caminho do driver do navegador. */
 	public String getDriverPath(){
 		
 		String driverPath = properties.getProperty("driverPath");
@@ -40,10 +45,11 @@ public class ConfigFileReader {
 			return driverPath;
 		} else {
 			
-			throw new RuntimeException("driverPath not specified in the Configuration.properties file.");		
+			throw new RuntimeException("driverPath: Caminho do driver não foi especificado no arquivo Configuration.properties.");		
 		}
 	}
 	
+	/**Método responsável por obter o tempo padrão de espera setado para espera implícita. */
 	public int getImplicitlyWait() {		
 		
 		String implicitlyWait = properties.getProperty("implicitlyWait");
@@ -53,10 +59,11 @@ public class ConfigFileReader {
 			return Integer.parseInt(implicitlyWait);
 		} else {
 			
-			throw new RuntimeException("implicitlyWait not specified in the Configuration.properties file.");		
+			throw new RuntimeException("implicitlyWait: Tempo de espera implícita não foi especificada Configuration.properties.");		
 		}
 	}
 	
+	/**Método responsável por obter a URL da aplicação. */
 	public String getApplicationUrl() {
 		
 		String url = properties.getProperty("url");
@@ -66,7 +73,7 @@ public class ConfigFileReader {
 			return url;
 		} else {
 			
-			throw new RuntimeException("url not specified in the Configuration.properties file.");
+			throw new RuntimeException("url: URL da aplicação não foi especificada no arquivo Configuration.properties.");
 		}
 	}
 	

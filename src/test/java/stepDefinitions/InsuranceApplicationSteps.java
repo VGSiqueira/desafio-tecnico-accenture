@@ -5,19 +5,23 @@ import java.time.Duration;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import builder.InsurantDataBuilder;
 import builder.ProductDataBuilder;
 import builder.SendQuoteBuilder;
 import builder.VehicleDataBuilder;
 import dataProvider.ConfigFileReader;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import managers.BuilderManager;
 import managers.FileReaderManager;
 import managers.PageObjectManager;
+import managers.UtilsManager;
+import managers.WebDriverManager;
 import pages.InsurantDataPO;
 import pages.PriceOptionPO;
 import pages.ProductDataPO;
@@ -25,7 +29,7 @@ import pages.SendQuotePO;
 import pages.VehicleDataPO;
 import utils.MethodUtils;
 
-public class SegurosAutomoveisSteps  {
+public class InsuranceApplicationSteps {
 
 	private WebDriver driver;
 	
@@ -36,8 +40,12 @@ public class SegurosAutomoveisSteps  {
 	private SendQuotePO sendQuotePO;
 	
 	private MethodUtils utils;
+	
+	private WebDriverManager webDriverManager;
 	private PageObjectManager pageObjectManager;
+	private BuilderManager builderManager;
 	private ConfigFileReader configFileReader;
+	private UtilsManager utilsManager;
 	
 	private InsurantDataBuilder insurantDataBuilder;
 	private VehicleDataBuilder vehicleDataBuilder;
@@ -45,28 +53,56 @@ public class SegurosAutomoveisSteps  {
 	private SendQuoteBuilder sendQuoteBuilder;
 	
 	private int tempoMaximoEspera = FileReaderManager.getInstance().getConfigReader().getImplicitlyWait();
+	private String counter = "0";
 	
-	@Given("^usuário está na página de aplicação de seguro de automóveis$")
-	public void usuário_está_na_página_de_aplicação_de_seguro_de_automóveis() {
+	@Before
+	public void BeforeSteps() {
+		
+		webDriverManager = new WebDriverManager(driver);
+		
 		configFileReader = new ConfigFileReader();
 		System.setProperty("webdriver.chrome.driver", FileReaderManager.getInstance().getConfigReader().getDriverPath());
 		
-		driver = new ChromeDriver();
+		driver = webDriverManager.getWebDriver();
 		pageObjectManager = new PageObjectManager(driver);
+		builderManager = new BuilderManager(pageObjectManager);
+		utilsManager = new UtilsManager();
 		
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(FileReaderManager.getInstance().getConfigReader().getImplicitlyWait()));
+		driver.manage().deleteAllCookies();
+		
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(FileReaderManager.getInstance().getConfigReader().getImplicitlyWait()));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(FileReaderManager.getInstance().getConfigReader().getImplicitlyWait()));
 		
 		driver.manage().window().maximize();
 		
-		driver.navigate().to(configFileReader.getApplicationUrl());
+		driver.get(configFileReader.getApplicationUrl());
 		
-		utils = new MethodUtils();
 		vehicleDataPO = pageObjectManager.getVehicleDataPO();
+		insurantDataPO = pageObjectManager.getInsurantDataPO();
+		productDataPO = pageObjectManager.getProductDataPO();
+		sendQuotePO = pageObjectManager.getSendQuotePO();
+		
+		vehicleDataBuilder = builderManager.getVehicleDataBuilder();
+		insurantDataBuilder = builderManager.getInsurantDataBuilder();
+		productDataBuilder = builderManager.getProductDataBuilder();
+		sendQuoteBuilder = builderManager.getSendQuoteBuilder();
+		
+		utils = utilsManager.getUtils();
+	}
+	
+	@After
+	public void AfterSteps() {
+		
+		webDriverManager.closeDriver();
+	}
+	
+	@Given("^usuário está na página de aplicação de seguro de automóveis$")
+	public void usuário_está_na_página_de_aplicação_de_seguro_de_automóveis() {
+		
+		String page = "Automobile Insurance";
 		
 		utils.clicar(vehicleDataPO.menu_Automobile, driver, tempoMaximoEspera);
-		
-		utils.aguardarElementoPorTexto(vehicleDataPO.span_InsuranceType, driver, "Automobile Insurance", tempoMaximoEspera);
+		utils.aguardarElementoPorTexto(vehicleDataPO.span_InsuranceType, driver, page, tempoMaximoEspera);
 	}
 
 	@When("^preencher o formulário na aba Enter Vehicle Data e pressionar next$")
@@ -81,11 +117,6 @@ public class SegurosAutomoveisSteps  {
 		String licensePlateNumber = "123456";
 		String annualMileage = "1500";
 		
-		vehicleDataPO = pageObjectManager.getVehicleDataPO();
-		utils = new MethodUtils();
-		
-		vehicleDataBuilder = new VehicleDataBuilder(vehicleDataPO);
-		
 		vehicleDataBuilder
 			.com_Make(make)
 			.com_EnginePerformance(enginePerformance)
@@ -95,30 +126,26 @@ public class SegurosAutomoveisSteps  {
 			.com_ListPrice(listPrice)
 			.com_LicensePlateNumber(licensePlateNumber)
 			.com_AnnualMileage(annualMileage)
-			.preencher_VehicleData(driver, tempoMaximoEspera);
+			.preencher_VehicleDataAutomobile(driver, tempoMaximoEspera);
 		
+		utils.aguardarElementoPorTexto(vehicleDataPO.span_VehicleDataCounter, driver, counter, tempoMaximoEspera);
 		utils.clicar(vehicleDataPO.btn_Next, driver, tempoMaximoEspera);
 	}
 
 	@And("^preencher o formulário na aba Enter Insurant Data e pressionar next$")
 	public void preencher_o_formulário_na_aba_Enter_Insurant_Data_e_pressionar_next() {
 		
-		insurantDataPO = pageObjectManager.getInsurantDataPO();
-		
 		String firstName = "Vinicius";
 		String lastName = "Siqueira";
 		String dateOfBirth = "04/08/1994";
-		WebElement gender = insurantDataPO.rdbtn_Male;
 		String streetAdress = "Rua Nicacio Salles";
 		String country = "Brazil";
 		String zipCode = "28635360";
 		String city = "Nova Friburgo";
 		String occupation = "Selfemployed";
 		String[] hobbies = {"Speeding", "Other"};
-		
-		utils = new MethodUtils();
-		
-		insurantDataBuilder = new InsurantDataBuilder(insurantDataPO);
+		WebElement gender = insurantDataPO.rdbtn_Male;	
+
 		insurantDataBuilder
 			.com_FirstName(firstName)
 			.com_LastName(lastName)
@@ -130,8 +157,9 @@ public class SegurosAutomoveisSteps  {
 			.com_City(city)
 			.com_Occupation(occupation)
 			.com_Hobbies(insurantDataPO.chkbox_hobbies, hobbies)
-			.preencher_InsurantData(driver, tempoMaximoEspera);
+			.preencher_InsurantDataAutomobile(driver, tempoMaximoEspera);
 		
+		utils.aguardarElementoPorTexto(insurantDataPO.span_InsurantDataCounter, driver, counter, tempoMaximoEspera);
 		utils.clicar(insurantDataPO.btn_Next, driver, FileReaderManager.getInstance().getConfigReader().getImplicitlyWait());
 	}
 
@@ -145,11 +173,6 @@ public class SegurosAutomoveisSteps  {
 		String[] optionalProducts = {"Euro Protection","Legal Defense Insurance"};
 		String courtesyCar = "Yes";
 		
-		productDataPO = pageObjectManager.getProductDataPO();
-		
-		utils = new MethodUtils();
-		
-		productDataBuilder = new ProductDataBuilder(productDataPO);
 		productDataBuilder
 			.com_StartDate(startDate)
 			.com_InsuranceSum(insuranceSum)
@@ -157,8 +180,9 @@ public class SegurosAutomoveisSteps  {
 			.com_DamageInsurance(damageInsurance)
 			.com_OptionalProducts(productDataPO.chkbox_OptionalProducts, optionalProducts)
 			.com_CourtesyCar(courtesyCar)
-			.preencher_ProductData(driver, tempoMaximoEspera);
+			.preencher_ProductDataAutomobile(driver, tempoMaximoEspera);
 		
+		utils.aguardarElementoPorTexto(productDataPO.span_ProductDataCounter, driver, counter, tempoMaximoEspera);
 		utils.clicar(productDataPO.btn_Next, driver, tempoMaximoEspera);
 	}
 
@@ -167,11 +191,10 @@ public class SegurosAutomoveisSteps  {
 		
 		priceOptionPO = pageObjectManager.getPriceOptionPO();
 		
-		utils = new MethodUtils();
-		
 		utils.clicar(priceOptionPO.rdbtn_Platinum, driver, tempoMaximoEspera);
 		
 		utils.aguardarElementoFicarVisivel(priceOptionPO.btn_Next, driver, tempoMaximoEspera);
+		utils.aguardarElementoPorTexto(priceOptionPO.span_PriceOptionCounter, driver, counter, tempoMaximoEspera);
 		utils.clicar(priceOptionPO.btn_Next, driver, tempoMaximoEspera);
 	}
 
@@ -185,11 +208,6 @@ public class SegurosAutomoveisSteps  {
 		String confirmPassword = "123456As";
 		String comments = "Comentário de teste.";
 		
-		sendQuotePO = pageObjectManager.getSendQuotePO();
-		
-		utils = new MethodUtils();
-		
-		sendQuoteBuilder = new SendQuoteBuilder(sendQuotePO);
 		sendQuoteBuilder
 			.com_Email(email)
 			.com_Phone(phone)
@@ -207,11 +225,10 @@ public class SegurosAutomoveisSteps  {
 		
 		String successMessage = "Sending e-mail success!";
 		
-		utils = new MethodUtils();
-		
 		utils.aguardarElementoFicarVisivel(sendQuotePO.Alert, driver, tempoMaximoEspera);
 		Assert.assertEquals(successMessage, utils.obterTexto(sendQuotePO.txt_AlertTitle));
 		
+		utils.aguardarElementoPorTexto(sendQuotePO.span_SendQuoteCounter, driver, counter, tempoMaximoEspera);
 		utils.clicar(sendQuotePO.btn_Ok, driver, tempoMaximoEspera);
 	}
 	

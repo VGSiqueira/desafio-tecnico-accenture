@@ -34,6 +34,11 @@ public class MethodUtils {
 		}
 	}
 	
+	/**
+	 * Método responsável por executar a espera implícita.
+	 * @param tempoMaximoEspera Tempo máximo de espera até aprensentar alguma exception.
+	 * @param driver Driver do navegador.
+	 */
 	public void esperaImplicita(int tempoMaximoEspera, WebDriver driver) {
 		tempoSegundos = Duration.ofSeconds(tempoMaximoEspera);
 		
@@ -48,7 +53,7 @@ public class MethodUtils {
 	 */
 	public void aguardarElementoFicarVisivel(WebElement elemento, WebDriver driver, int tempoMaximoEspera) {
 		
-		tempoSegundos = Duration.ofSeconds(tempoMaximoEspera);
+		esperaImplicita(tempoMaximoEspera, driver);
 		
 		esperar = new WebDriverWait(driver, tempoSegundos);
 		esperar.ignoring(StaleElementReferenceException.class).until(ExpectedConditions.visibilityOf(elemento));
@@ -61,10 +66,6 @@ public class MethodUtils {
 	 * @param tempoMaximoEspera Tempo máximo de espera até aprensentar alguma exception.
 	 */
 	public void aguardarElementoSerClicavel(WebElement elemento, WebDriver driver, int tempoMaximoEspera) {
-		
-//		tempoSegundos = Duration.ofSeconds(tempoMaximoEspera);
-//		
-//		driver.manage().timeouts().implicitlyWait(tempoSegundos);
 		
 		esperaImplicita(tempoMaximoEspera, driver);
 		
@@ -81,9 +82,7 @@ public class MethodUtils {
 	 */
 	public void aguardarElementoPorTexto(WebElement elemento, WebDriver driver, String texto, int tempoMaximoEspera) {
 		
-		tempoSegundos = Duration.ofSeconds(tempoMaximoEspera);
-		
-		driver.manage().timeouts().implicitlyWait(tempoSegundos);
+		esperaImplicita(tempoMaximoEspera, driver);
 		
 		esperar = new WebDriverWait(driver, tempoSegundos);
 		esperar.until(ExpectedConditions.textToBePresentInElement(elemento, texto));
@@ -165,4 +164,17 @@ public class MethodUtils {
 		}
 	}
 	
+	/**
+	 * Método responsável por aguardar elemento não estar mais visível.
+	 * @param elemento Elemento que deseja aguardar não estar mais visível.
+	 * @param driver Driver da página.
+	 * @param tempoMaximoEspera Tempo máximo de espera antes de apresentar uma exception.
+	 */
+	public void aguardarElementoNaoEstarVisivel(WebElement elemento, WebDriver driver, int tempoMaximoEspera) {
+		
+		esperaImplicita(tempoMaximoEspera, driver);
+		
+		esperar = new WebDriverWait(driver, tempoSegundos);
+		esperar.until(ExpectedConditions.invisibilityOf(elemento));
+	}
 }

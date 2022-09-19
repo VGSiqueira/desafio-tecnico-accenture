@@ -68,6 +68,7 @@ public class InsuranceApplicationSteps {
 		builderManager = new BuilderManager(pageObjectManager);
 		utilsManager = new UtilsManager();
 		
+		utils = utilsManager.getUtils();
 		driver.manage().deleteAllCookies();
 		
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(FileReaderManager.getInstance().getConfigReader().getImplicitlyWait()));
@@ -87,7 +88,6 @@ public class InsuranceApplicationSteps {
 		productDataBuilder = builderManager.getProductDataBuilder();
 		sendQuoteBuilder = builderManager.getSendQuoteBuilder();
 		
-		utils = utilsManager.getUtils();
 	}
 	
 	@After
@@ -230,6 +230,8 @@ public class InsuranceApplicationSteps {
 		
 		utils.aguardarElementoPorTexto(sendQuotePO.span_SendQuoteCounter, driver, counter, tempoMaximoEspera);
 		utils.clicar(sendQuotePO.btn_Ok, driver, tempoMaximoEspera);
+		
+		utils.aguardarElementoNaoEstarVisivel(sendQuotePO.btn_Ok, driver, tempoMaximoEspera);
 	}
 	
 }
